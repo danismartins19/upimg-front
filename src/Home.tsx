@@ -3,23 +3,22 @@ import { FileUploader } from "react-drag-drop-files";
 
 function Home() {
   let base64string : any = "";
-  const [file,setFile] = useState<any>(null);
   const fileTypes = ["JPG", "PNG"];
-  const handleDropFiles = (file : File) =>{
-    setFile(file)
-  }
 
-  useEffect(()=>{
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      base64string = reader.result;
+  const handleDropFiles = (file : any) =>{
+    var reader = new FileReader();
+    if(file[0]){
+      reader.readAsDataURL(file[0])
     }
 
-    console.log(base64string);
-    
-  },[file])
+    reader.onloadend = () =>{
+      base64string = reader.result;
+      console.log(base64string)
+    }
+  }
 
+
+  
 
   return (
     <>
@@ -31,7 +30,6 @@ function Home() {
         hoverTitle="Solte aqui"
         types={fileTypes}
       />
-      <p>{file ? `${file[0].name} adicionado!` : "Nenhum arquivo adicionado!"}</p>
     </>
   );
 }
