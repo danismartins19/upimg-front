@@ -19,10 +19,17 @@ function Home() {
     }
   }
 
-  const sendImage = async () =>{
-    console.log(`${import.meta.env.VITE_BASE_URL}`)
-    let req = await api.post(`${import.meta.env.VITE_BASE_URL}/`, {
-        img: base64string
+  const sendImage = () =>{
+    let jsonstr = JSON.stringify(base64string);
+    api.post(`${import.meta.env.VITE_BASE_URL}/`, { 
+        jsonstr
+      }      
+    )
+    .then((res)=>{
+      alert(res)
+    })
+    .catch((err) =>{
+      alert(err)
     })
 
   }
