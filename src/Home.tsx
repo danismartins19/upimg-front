@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import axios from 'axios';
+import api from 'axios';
 
 function Home() {
   let base64string : any = "";
@@ -20,7 +20,8 @@ function Home() {
   }
 
   const sendImage = async () =>{
-    let req = await axios.post(`${import.meta.BASE_URL}/`, {
+    console.log(`${import.meta.env.VITE_BASE_URL}`)
+    let req = await api.post(`${import.meta.env.VITE_BASE_URL}/`, {
         img: base64string
     })
 
