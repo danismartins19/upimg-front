@@ -3,7 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import api from 'axios';
 
 function Home() {
-  let base64string : any = "";
+  const [base64string, setBase64string] = useState<any>("");
   const fileTypes = ["JPG", "PNG"];
   const [fileName, setFileName] = useState<string>("");
 
@@ -15,18 +15,28 @@ function Home() {
     }
 
     reader.onloadend = () =>{
-      base64string = reader.result;
+      setBase64string(reader.result);
     }
   }
 
   const sendImage = () =>{
-    let jsonstr = JSON.stringify(base64string);
-    api.post(`${import.meta.env.VITE_BASE_URL}/`, { 
-        jsonstr
-      }      
+
+    fetch(`${import.meta.env.VITE_BASE_URL}/`, 
+      {
+        method: "POST",
+
+        body: JSON.stringify({
+          img: base64string
+        }),
+
+        headers:{
+          "Content-type": "application/json; charset=UTF-8"
+        }
+
+      }
     )
     .then((res)=>{
-      alert(res)
+      console.log(res)
     })
     .catch((err) =>{
       alert(err)
