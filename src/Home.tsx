@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import api from 'axios';
+import { api } from "./api/api";
+import { GenerateUrl } from "./utils/generateUrl";
 
 function Home() {
+
   const [base64string, setBase64string] = useState<any>("");
-  const fileTypes = ["JPG", "PNG"];
   const [fileName, setFileName] = useState<string>("");
+  const [linkToViewImage, setLinkToViewImage] = useState<any>(null);
+
+  const fileTypes = ["JPG", "PNG"];
 
   const handleDropFiles = (file : any) =>{
     var reader = new FileReader();
@@ -21,25 +25,17 @@ function Home() {
 
   const sendImage = () =>{
 
-    fetch(`${import.meta.env.VITE_BASE_URL}/`, 
-      {
-        method: "POST",
-
-        body: JSON.stringify({
-          img: base64string
-        }),
-
-        headers:{
-          "Content-type": "application/json; charset=UTF-8"
-        }
-
-      }
-    )
-    .then((res)=>{
-      console.log(res)
+    api.post('/', {
+      "img" : base64string
     })
-    .catch((err) =>{
-      alert(err)
+    .then((res)=>{
+      return res.data;
+    })
+    .then((res)=>{
+      setLinkToViewImage(GenerateUrl(res.id))
+    })
+    .catch((err)=>{
+      console.log(err)
     })
 
   }
@@ -56,14 +52,18 @@ function Home() {
       />
 
       { fileName != "" && 
-
         <>
           <h4>{fileName}</h4>
           <br />
           <button onClick={sendImage}>Enviar imagem</button>
         </>
+      }
 
-
+      {
+        linkToViewImage != null && 
+          <>
+              <h4>{linkToViewImage}</h4>
+          </>
       }
 
     </>
