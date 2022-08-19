@@ -1,26 +1,18 @@
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-import { api } from "./api/api";
-import { GenerateUrl } from "./utils/generateUrl";
+import { api } from "../api/api";
+import { convertImageToBase64 } from "../utils/convertImageToBase64";
+import { fileTypes } from "../utils/fileTypesAccepted";
+import { GenerateUrl } from "../utils/generateUrl";
 
 function Home() {
 
   const [base64string, setBase64string] = useState<any>("");
-  const [fileName, setFileName] = useState<string>("");
   const [linkToViewImage, setLinkToViewImage] = useState<any>(null);
 
-  const fileTypes = ["JPG", "PNG"];
 
-  const handleDropFiles = (file : any) =>{
-    var reader = new FileReader();
-    if(file[0]){
-      reader.readAsDataURL(file[0])
-      setFileName(file[0].name)
-    }
-
-    reader.onloadend = () =>{
-      setBase64string(reader.result);
-    }
+  const handleDropFiles = (file : FileList) =>{
+      setBase64string(convertImageToBase64(file))
   }
 
   const sendImage = () =>{
@@ -51,10 +43,8 @@ function Home() {
         types={fileTypes}
       />
 
-      { fileName != "" && 
+      { base64string != "" && 
         <>
-          <h4>{fileName}</h4>
-          <br />
           <button onClick={sendImage}>Enviar imagem</button>
         </>
       }
