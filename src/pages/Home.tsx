@@ -33,7 +33,12 @@ function Home() {
   }
 
   return (
-    <>
+    <div className="flex gap-10 flex-col items-center w-full h-screen pt-20 bg-stone-200">
+
+      <div className="flex w-full h-32 mb-10 items-center justify-center bg-[#234285]">
+      
+      </div>
+
      <FileUploader
         multiple={true}
         handleChange={handleDropFiles}
@@ -45,18 +50,24 @@ function Home() {
 
       { base64string != "" && 
         <>
-          <button onClick={sendImage}>Enviar imagem</button>
+          <button onClick={sendImage} className="w-40 h-26 p-3 rounded-md text-center bg-[#234285]/80">
+            <p className="text-slate-50">Enviar imagem</p>
+          </button>
         </>
       }
 
-      {
-        linkToViewImage != null && 
-          <>
-              <h4>{linkToViewImage}</h4>
-          </>
-      }
+      
+        
+          <div className="flex">
+              <button className="flex rounded-l-lg w-16 h-14 bg-[#234285]/80"></button>
+              <div className="w-auto h-14 px-4"></div>
+              <button className="flex rounded-r-lg w-16 h-14 bg-[#234285]/80 items-center justify-center"><i className="bi bi-box-arrow-up-right text-xl text-white" ></i></button>
+          </div>
+      
 
-    </>
+      
+
+  </div>
   );
 }
 
